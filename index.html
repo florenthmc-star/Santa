@@ -336,7 +336,7 @@ const firebaseConfig = {
 };
 
 // ─── Mot de passe admin ────────────────────────────────────
-const ADMIN_PASSWORD = "santa1903";
+const ADMIN_PASSWORD = "noel2026";
 
 // ─── Blagues ───────────────────────────────────────────────
 const jokes = [
@@ -412,10 +412,37 @@ onAuthStateChanged(auth, async googleUser => {
 
   const email = googleUser.email.toLowerCase();
   const participant = state.participants.find(p => p.email.toLowerCase() === email);
+  const isEmptyDB = state.participants.length === 0;
 
-  if (!participant) {
+  // MODE BOOTSTRAP : si la base est vide, l'admin est accessible sans être dans la liste
+  if (!participant && !isEmptyDB && !pendingAdmin) {
     $('notfound-msg').textContent = `Ton adresse "${googleUser.email}" n'est associée à aucun participant.`;
     showScreen('screen-notfound');
+    return;
+  }
+
+  // Bootstrap ou accès admin : pas besoin d'être dans la liste si DB vide
+  if (pendingAdmin || isEmptyDB) {
+    pendingAdmin = false;
+    // Crée un participant temporaire pour l'admin si DB vide
+    if (!participant) {
+      currentParticipant = { name: googleUser.displayName || googleUser.email, email: googleUser.email };
+    } else {
+      currentParticipant = participant;
+    }
+    const av = $('user-avatar');
+    if (googleUser.photoURL) { av.src = googleUser.photoURL; av.style.display='block'; $('user-avatar-ph').style.display='none'; }
+    $('user-name-label').textContent = currentParticipant.name;
+    renderAdmin(googleUser);
+    showScreen('screen-admin');
+    if (isEmptyDB) {
+      // Affiche un message de bienvenue bootstrap
+      const info = document.createElement('div');
+      info.style.cssText = 'background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);border-radius:0.75rem;padding:1rem;margin-bottom:1rem;color:var(--gold-light);font-size:0.85rem;line-height:1.5;';
+      info.innerHTML = '🎉 <strong>Premier lancement !</strong> La base est vide. Commence par t'ajouter toi-même avec ton Gmail, puis ajoute les autres participants, lance le tirage et sauvegarde.';
+      const panel = document.querySelector('.admin-panel');
+      panel.insertBefore(info, panel.firstChild);
+    }
     return;
   }
 
@@ -426,14 +453,8 @@ onAuthStateChanged(auth, async googleUser => {
   if (googleUser.photoURL) { av.src = googleUser.photoURL; av.style.display='block'; $('user-avatar-ph').style.display='none'; }
   $('user-name-label').textContent = participant.name;
 
-  if (pendingAdmin) {
-    pendingAdmin = false;
-    renderAdmin(googleUser);
-    showScreen('screen-admin');
-  } else {
-    renderGame();
-    showScreen('screen-game');
-  }
+  renderGame();
+  showScreen('screen-game');
 });
 
 function doSignOut() { fbSignOut(auth); }
