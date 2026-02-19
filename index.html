@@ -439,7 +439,7 @@ onAuthStateChanged(auth, async googleUser => {
       // Affiche un message de bienvenue bootstrap
       const info = document.createElement('div');
       info.style.cssText = 'background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);border-radius:0.75rem;padding:1rem;margin-bottom:1rem;color:var(--gold-light);font-size:0.85rem;line-height:1.5;';
-      info.innerHTML = '🎉 <strong>Premier lancement !</strong> La base est vide. Commence par t'ajouter toi-même avec ton Gmail, puis ajoute les autres participants, lance le tirage et sauvegarde.';
+      info.innerHTML = "🎉 <strong>Premier lancement !</strong> La base est vide. Commence par t'ajouter toi-même avec ton Gmail, puis ajoute les autres participants, lance le tirage et sauvegarde.";
       const panel = document.querySelector('.admin-panel');
       panel.insertBefore(info, panel.firstChild);
     }
