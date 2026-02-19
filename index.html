@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- v3.1 fixed -->
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -340,14 +341,14 @@ const ADMIN_PASSWORD = "noel2026";
 
 // ─── Blagues ───────────────────────────────────────────────
 const jokes = [
-  { emoji:"🖕", text:"Pas touche, espion·ne !", sub:"Ta carte t'attend là-bas..." },
+  { emoji:"🖕", text:"Pas touche, espion·ne !", sub:"Ta carte t’attend là-bas..." },
   { emoji:"👀", text:"Tu cherches à tricher ?", sub:"Le Père Noël te voit." },
-  { emoji:"🤨", text:"Celle-là c'est pas pour toi !", sub:"Retourne à ta place." },
+  { emoji:"🤨", text:"Celle-là c’est pas pour toi !", sub:"Retourne à ta place." },
   { emoji:"😤", text:"Non mais allô quoi.", sub:"Va voir ta propre carte." },
-  { emoji:"🙈", text:"T'as pas honte ?!", sub:"Fouineur·se détecté·e." },
+  { emoji:"🙈", text:"T’as pas honte ?!", sub:"Fouineur·se détecté·e." },
   { emoji:"🚫", text:"Accès refusé !", sub:"La CIA te surveille." },
   { emoji:"🤡", text:"Beau try, clown.", sub:"Ça marchera pas." },
-  { emoji:"💀", text:"R.I.P tes chances.", sub:"C'est pas ta carte." },
+  { emoji:"💀", text:"R.I.P tes chances.", sub:"C’est pas ta carte." },
   { emoji:"🖕", text:"Sérieusement ?!", sub:"Rentre chez toi." },
   { emoji:"😈", text:"Oh le vilain lutin !", sub:"Cadeaux annulés." },
 ];
@@ -416,7 +417,7 @@ onAuthStateChanged(auth, async googleUser => {
 
   // MODE BOOTSTRAP : si la base est vide, l'admin est accessible sans être dans la liste
   if (!participant && !isEmptyDB && !pendingAdmin) {
-    $('notfound-msg').textContent = `Ton adresse "${googleUser.email}" n'est associée à aucun participant.`;
+    $('notfound-msg').textContent = `Ton adresse ${googleUser.email} n'est pas dans la liste des participants.`;
     showScreen('screen-notfound');
     return;
   }
@@ -438,8 +439,8 @@ onAuthStateChanged(auth, async googleUser => {
     if (isEmptyDB) {
       // Affiche un message de bienvenue bootstrap
       const info = document.createElement('div');
-      info.style.cssText = 'background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);border-radius:0.75rem;padding:1rem;margin-bottom:1rem;color:var(--gold-light);font-size:0.85rem;line-height:1.5;';
-      info.innerHTML = "🎉 <strong>Premier lancement !</strong> La base est vide. Commence par t'ajouter toi-même avec ton Gmail, puis ajoute les autres participants, lance le tirage et sauvegarde.";
+      info.style.cssText = `background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.3);border-radius:0.75rem;padding:1rem;margin-bottom:1rem;color:var(--gold-light);font-size:0.85rem;line-height:1.5;`;
+      info.innerHTML = "🎉 <strong>Premier lancement !</strong> La base est vide. Ajoute les participants avec leur Gmail, lance le tirage et sauvegarde.";
       const panel = document.querySelector('.admin-panel');
       panel.insertBefore(info, panel.firstChild);
     }
